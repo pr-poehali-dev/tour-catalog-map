@@ -133,6 +133,8 @@ const Catalog = () => {
     {
       id: 1,
       name: "Отель Зеленый Лес",
+      description:
+        "Уютный отель в лесной зоне с современными номерами и спа-центром",
       category: "hotels",
       region: "moscow-oblast",
       rating: 4.5,
@@ -143,6 +145,8 @@ const Catalog = () => {
     {
       id: 2,
       name: "Ресторан У Озера",
+      description:
+        "Ресторан с панорамным видом на озеро, авторская кухня и свежая рыба",
       category: "restaurants",
       region: "karelia",
       rating: 4.8,
@@ -153,6 +157,7 @@ const Catalog = () => {
     {
       id: 3,
       name: "Водопад Серебряный",
+      description: "Живописный водопад высотой 25 метров среди горных склонов",
       category: "attractions",
       region: "altai-republic",
       rating: 4.9,
@@ -163,6 +168,8 @@ const Catalog = () => {
     {
       id: 4,
       name: "Рафтинг по реке",
+      description:
+        "Экстремальный сплав по горной реке с опытными инструкторами",
       category: "activities",
       region: "krasnodar",
       rating: 4.7,
@@ -173,6 +180,7 @@ const Catalog = () => {
     {
       id: 5,
       name: "Отель Горный Воздух",
+      description: "Высокогорный отель с захватывающими видами на вершины",
       category: "hotels",
       region: "altai-krai",
       rating: 4.6,
@@ -183,6 +191,8 @@ const Catalog = () => {
     {
       id: 6,
       name: "Кафе Лесная Поляна",
+      description:
+        "Домашняя атмосфера, блюда из местных продуктов и детская площадка",
       category: "restaurants",
       region: "spb-city",
       rating: 4.4,
@@ -193,6 +203,8 @@ const Catalog = () => {
     {
       id: 7,
       name: "Музей Казанского Кремля",
+      description:
+        "Историческая крепость с музеями, древними башнями и мечетью",
       category: "attractions",
       region: "tatarstan",
       rating: 4.8,
@@ -203,6 +215,8 @@ const Catalog = () => {
     {
       id: 8,
       name: "Горнолыжный курорт Роза Хутор",
+      description:
+        "Современный курорт с трассами разной сложности и подъемниками",
       category: "activities",
       region: "krasnodar",
       rating: 4.9,
@@ -213,6 +227,8 @@ const Catalog = () => {
     {
       id: 9,
       name: "Отель Астана Плаза",
+      description:
+        "Бизнес-отель в центре города с конференц-залами и рестораном",
       category: "hotels",
       region: "kazakhstan",
       rating: 4.3,
@@ -223,6 +239,7 @@ const Catalog = () => {
     {
       id: 10,
       name: "Белорусские драники",
+      description: "Традиционное кафе с аутентичными белорусскими блюдами",
       category: "restaurants",
       region: "belarus",
       rating: 4.6,
@@ -233,9 +250,9 @@ const Catalog = () => {
   ];
 
   const filteredItems = items.filter((item) => {
-    const matchesSearch = item.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory =
       selectedCategory === "all" || item.category === selectedCategory;
     const matchesRegion =
@@ -257,7 +274,7 @@ const Catalog = () => {
           <div className="flex flex-col lg:flex-row gap-4 mb-6">
             <div className="flex-1">
               <Input
-                placeholder="Поиск по названию..."
+                placeholder="Поиск по названию и описанию..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full"
