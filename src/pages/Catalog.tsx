@@ -4,10 +4,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Icon from "@/components/ui/icon";
 import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Catalog = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedRegion, setSelectedRegion] = useState("all");
 
   const categories = [
     { id: "all", name: "Все категории", icon: "Grid3X3" },
@@ -17,11 +25,22 @@ const Catalog = () => {
     { id: "activities", name: "Развлечения", icon: "Zap" },
   ];
 
+  const regions = [
+    { id: "all", name: "Все регионы" },
+    { id: "moscow", name: "Московская область" },
+    { id: "spb", name: "Санкт-Петербург" },
+    { id: "krasnodar", name: "Краснодарский край" },
+    { id: "altai", name: "Алтайский край" },
+    { id: "kazan", name: "Республика Татарстан" },
+    { id: "karelia", name: "Республика Карелия" },
+  ];
+
   const items = [
     {
       id: 1,
       name: "Отель Зеленый Лес",
       category: "hotels",
+      region: "moscow",
       rating: 4.5,
       price: "5000 ₽",
       image:
@@ -31,6 +50,7 @@ const Catalog = () => {
       id: 2,
       name: "Ресторан У Озера",
       category: "restaurants",
+      region: "karelia",
       rating: 4.8,
       price: "2000 ₽",
       image:
@@ -40,6 +60,7 @@ const Catalog = () => {
       id: 3,
       name: "Водопад Серебряный",
       category: "attractions",
+      region: "altai",
       rating: 4.9,
       price: "Бесплатно",
       image:
@@ -49,6 +70,7 @@ const Catalog = () => {
       id: 4,
       name: "Рафтинг по реке",
       category: "activities",
+      region: "krasnodar",
       rating: 4.7,
       price: "3500 ₽",
       image:
@@ -58,6 +80,7 @@ const Catalog = () => {
       id: 5,
       name: "Отель Горный Воздух",
       category: "hotels",
+      region: "altai",
       rating: 4.6,
       price: "4500 ₽",
       image:
@@ -67,6 +90,7 @@ const Catalog = () => {
       id: 6,
       name: "Кафе Лесная Поляна",
       category: "restaurants",
+      region: "spb",
       rating: 4.4,
       price: "1500 ₽",
       image:
@@ -80,7 +104,9 @@ const Catalog = () => {
       .includes(searchTerm.toLowerCase());
     const matchesCategory =
       selectedCategory === "all" || item.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    const matchesRegion =
+      selectedRegion === "all" || item.region === selectedRegion;
+    return matchesSearch && matchesCategory && matchesRegion;
   });
 
   return (
@@ -102,6 +128,20 @@ const Catalog = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full"
               />
+            </div>
+            <div className="w-full lg:w-64">
+              <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Выберите регион" />
+                </SelectTrigger>
+                <SelectContent>
+                  {regions.map((region) => (
+                    <SelectItem key={region.id} value={region.id}>
+                      {region.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <Button className="bg-primary hover:bg-accent">
               <Icon name="MapPin" size={16} />
