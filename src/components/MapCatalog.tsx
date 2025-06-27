@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Fix for default markers in react-leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+});
 
 const MapCatalog = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,6 +49,7 @@ const MapCatalog = () => {
       image:
         "https://images.unsplash.com/photo-1517824806704-9040b037703b?w=400&h=300&fit=crop",
       photos: "1/356",
+      coordinates: [55.7558, 37.6176] as [number, number], // Москва
     },
     {
       id: 2,
@@ -47,6 +62,7 @@ const MapCatalog = () => {
       image:
         "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=400&h=300&fit=crop",
       photos: "1/279",
+      coordinates: [55.8058, 37.5176] as [number, number], // Подмосковье
     },
     {
       id: 3,
@@ -58,6 +74,7 @@ const MapCatalog = () => {
       image:
         "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop",
       photos: "1/156",
+      coordinates: [55.7358, 37.6476] as [number, number], // Центр Москвы
     },
     {
       id: 4,
@@ -69,6 +86,7 @@ const MapCatalog = () => {
       image:
         "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop",
       photos: "1/89",
+      coordinates: [55.7858, 37.5876] as [number, number], // Север Москвы
     },
   ];
 
@@ -247,41 +265,61 @@ const MapCatalog = () => {
 
       {/* Right Panel - Map */}
       {showMap && (
-        <div className="w-1/2 relative bg-blue-100">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-200 via-green-100 to-yellow-100">
-            <img
-              src="https://cdn.poehali.dev/files/b56798da-f21d-40ea-abf5-e0ed4d8c4208.JPG"
-              alt="Карта кемпингов"
-              className="w-full h-full object-cover"
+        <div className="w-1/2 relative">
+          <MapContainer
+            center={[55.7558, 37.6176]}
+            zoom={11}
+            style={{ height: "100vh", width: "100%" }}
+            className="z-0"
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-          </div>
 
-          {/* Map Controls */}
-          <div className="absolute top-4 right-4 flex flex-col gap-2">
-            <Button
-              size="sm"
-              className="w-10 h-10 p-0 bg-white text-gray-700 hover:bg-gray-50 shadow-sm"
-            >
-              +
-            </Button>
-            <Button
-              size="sm"
-              className="w-10 h-10 p-0 bg-white text-gray-700 hover:bg-gray-50 shadow-sm"
-            >
-              −
-            </Button>
-          </div>
+            {filteredLocations.map((location) => (
+              <Marker key={location.id} position={location.coordinates}>
+                <Popup>
+                  <div className="p-2 min-w-48">
+                    <div className="flex items-start gap-3">
+                      <img
+                        src={location.image}
+                        alt={location.name}
+                        className="w-16 h-12 object-cover rounded"
+                      />
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-sm mb-1">
+                          {location.name}
+                        </h3>
+                        <p className="text-xs text-gray-600 mb-1">
+                          {location.description}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-sm">
+                            {location.price}
+                          </span>
+                          <div className="flex items-center bg-teal-600 text-white px-1.5 py-0.5 rounded text-xs">
+                            {location.rating}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
 
           {/* Search on Map Toggle */}
-          <div className="absolute top-4 left-4">
-            <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-4 py-2 text-sm">
+          <div className="absolute top-4 left-4 z-10">
+            <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-4 py-2 text-sm shadow-lg">
               <Icon name="Search" size={16} className="mr-2" />
               Искать по карте
             </Button>
           </div>
 
           {/* Map Legend */}
-          <div className="absolute bottom-4 left-4 bg-white rounded-lg p-3 shadow-sm">
+          <div className="absolute bottom-4 left-4 bg-white rounded-lg p-3 shadow-lg z-10">
             <div className="text-xs text-gray-600 mb-1">Цены от:</div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
