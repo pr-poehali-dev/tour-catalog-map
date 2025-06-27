@@ -50,9 +50,8 @@ const Hero = () => {
             <span className="block text-green-200">удивительные места</span>
           </h1>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Исследуйте тысячи объектов по всей России и СНГ: от уютных отелей до
-            экстремальных развлечений, от исторических достопримечательностей до
-            современных ресторанов
+            Тысячи объектов для любых впечатлений — твой полный каталог лучших
+            дней!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
