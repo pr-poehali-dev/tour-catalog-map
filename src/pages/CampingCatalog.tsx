@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import SearchFilters from "@/components/SearchFilters";
-import CampingList from "@/components/CampingList";
+import CatalogList from "@/components/CatalogList";
 import InteractiveMap from "@/components/InteractiveMap";
 
-interface CampingItem {
+interface CatalogItem {
   id: number;
   name: string;
   location: string;
@@ -15,7 +15,7 @@ interface CampingItem {
   image: string;
   lat: number;
   lng: number;
-  type: string;
+  category: string;
 }
 
 export default function CampingCatalog() {

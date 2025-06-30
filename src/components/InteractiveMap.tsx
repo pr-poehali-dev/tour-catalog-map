@@ -2,18 +2,18 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 
-interface CampingLocation {
+interface CatalogLocation {
   id: number;
   name: string;
   lat: number;
   lng: number;
   price: number;
   rating: number;
-  type: string;
+  category: string;
 }
 
 interface InteractiveMapProps {
-  selectedLocation?: CampingLocation;
+  selectedLocation?: CatalogLocation;
 }
 
 export default function InteractiveMap({
