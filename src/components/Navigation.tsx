@@ -12,7 +12,7 @@ const Navigation = () => {
     { path: "/catalog", label: "Каталог", icon: "Search" },
     { path: "/map", label: "Карта", icon: "Map" },
     { path: "/about", label: "О проекте", icon: "Info" },
-    { path: "/partners", label: "Партнерам", icon: "Handshake" },
+    { path: "/partners", label: "Владельцам объектов", icon: "Handshake" },
     { path: "/contacts", label: "Контакты", icon: "Phone" },
   ];
 
