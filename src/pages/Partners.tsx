@@ -1,8 +1,8 @@
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import PartnerRegistrationForm from "@/components/PartnerRegistrationForm";
+import UserRegistrationModal from "@/components/UserRegistrationModal";
 
 const Partners = () => {
   const benefits = [
@@ -72,13 +72,7 @@ const Partners = () => {
             бизнес.
           </p>
           <div className="flex justify-center">
-            <Button
-              size="lg"
-              className="bg-primary hover:bg-accent text-white px-8 py-3 text-lg"
-            >
-              <Icon name="Plus" size={20} className="mr-2" />
-              Добавить объект
-            </Button>
+            <UserRegistrationModal />
           </div>
         </div>
 
