@@ -67,11 +67,20 @@ const Partners = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-6">
             Станьте нашим партнером
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Присоединяйтесь к крупнейшей туристической платформе и увеличьте
             свои продажи. Мы поможем вам привлечь новых клиентов и развить
             бизнес.
           </p>
+          <div className="flex justify-center">
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-accent text-white px-8 py-3 text-lg"
+            >
+              <Icon name="Plus" size={20} className="mr-2" />
+              Добавить объект
+            </Button>
+          </div>
         </div>
 
         {/* Benefits */}
