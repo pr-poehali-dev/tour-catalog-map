@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Icon from "@/components/ui/icon";
-import OwnerRegistrationModal from "@/components/OwnerRegistrationModal";
 
 const Partners = () => {
   const benefits = [
@@ -74,7 +73,13 @@ const Partners = () => {
             бизнес.
           </p>
           <div className="flex justify-center">
-            <OwnerRegistrationModal />
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-accent text-white px-8 py-3 text-lg"
+            >
+              <Icon name="Plus" size={20} className="mr-2" />
+              Добавить объект
+            </Button>
           </div>
         </div>
 
