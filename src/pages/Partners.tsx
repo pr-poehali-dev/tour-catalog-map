@@ -1,9 +1,8 @@
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import Icon from "@/components/ui/icon";
+import PartnerRegistrationForm from "@/components/PartnerRegistrationForm";
 
 const Partners = () => {
   const benefits = [
@@ -147,31 +146,7 @@ const Partners = () => {
               для обсуждения условий сотрудничества.
             </p>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Форма регистрации партнера</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input placeholder="Название организации" />
-                  <Input placeholder="Тип бизнеса" />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input placeholder="Контактное лицо" />
-                  <Input placeholder="Телефон" type="tel" />
-                </div>
-                <Input placeholder="Email" type="email" />
-                <Input placeholder="Адрес объекта" />
-                <Textarea
-                  placeholder="Расскажите о вашем бизнесе"
-                  className="min-h-32"
-                />
-                <Button className="w-full bg-primary hover:bg-accent">
-                  <Icon name="Send" size={16} />
-                  Отправить заявку
-                </Button>
-              </CardContent>
-            </Card>
+            <PartnerRegistrationForm />
           </div>
 
           <div className="space-y-6">
