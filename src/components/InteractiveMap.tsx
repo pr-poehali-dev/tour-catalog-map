@@ -1,20 +1,6 @@
-import { useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
-
-// Fix для иконок Leaflet
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-});
 
 interface CampingLocation {
   id: number;
@@ -33,7 +19,7 @@ interface InteractiveMapProps {
 export default function InteractiveMap({
   selectedLocation,
 }: InteractiveMapProps) {
-  const mapRef = useRef<any>(null);
+  const [zoom, setZoom] = useState(6);
 
   const locations: CampingLocation[] = [
     {
@@ -90,71 +76,17 @@ export default function InteractiveMap({
       rating: 9.3,
       type: "camping",
     },
-    {
-      id: 7,
-      name: "Морской берег",
-      lat: 44.6,
-      lng: 33.5,
-      price: 5800,
-      rating: 9.6,
-      type: "glamping",
-    },
-    {
-      id: 8,
-      name: "Фермерский дом",
-      lat: 50.8,
-      lng: 36.2,
-      price: 1900,
-      rating: 8.7,
-      type: "farm",
-    },
   ];
 
-  // Создаем кастомную иконку с ценой
-  const createPriceIcon = (price: number, isSelected = false) => {
-    const backgroundColor = isSelected ? "#ef4444" : "#f97316";
-    const textColor = "white";
-
-    return L.divIcon({
-      className: "custom-price-marker",
-      html: `
-        <div style="
-          background-color: ${backgroundColor};
-          color: ${textColor};
-          padding: 4px 8px;
-          border-radius: 16px;
-          font-size: 12px;
-          font-weight: 600;
-          border: 2px solid white;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-          white-space: nowrap;
-          text-align: center;
-          min-width: 40px;
-        ">
-          ${Math.floor(price / 1000)} ${price >= 1000 ? (price % 1000 === 0 ? "" : (price % 1000 < 100 ? "0" : "") + (price % 1000)) : price} ₽
-        </div>
-      `,
-      iconSize: [60, 24],
-      iconAnchor: [30, 24],
-      popupAnchor: [0, -24],
-    });
-  };
-
-  useEffect(() => {
-    if (selectedLocation && mapRef.current) {
-      mapRef.current.setView([selectedLocation.lat, selectedLocation.lng], 12);
-    }
-  }, [selectedLocation]);
-
   return (
-    <div className="relative h-full bg-white">
+    <div className="relative h-full bg-gray-100">
       {/* Map Controls */}
       <div className="absolute top-4 right-4 z-[1000] flex flex-col space-y-2">
         <Button
           size="sm"
           variant="outline"
           className="bg-white shadow-md"
-          onClick={() => mapRef.current?.zoomIn()}
+          onClick={() => setZoom((prev) => Math.min(prev + 1, 18))}
         >
           <Icon name="Plus" size={16} />
         </Button>
@@ -162,7 +94,7 @@ export default function InteractiveMap({
           size="sm"
           variant="outline"
           className="bg-white shadow-md"
-          onClick={() => mapRef.current?.zoomOut()}
+          onClick={() => setZoom((prev) => Math.max(prev - 1, 1))}
         >
           <Icon name="Minus" size={16} />
         </Button>
@@ -196,47 +128,68 @@ export default function InteractiveMap({
         </div>
       </div>
 
-      <MapContainer
-        ref={mapRef}
-        center={[55.7558, 37.6176]}
-        zoom={6}
-        className="h-full w-full"
-        zoomControl={false}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      {/* Simple Map Placeholder with Markers */}
+      <div className="h-full w-full bg-gradient-to-br from-green-50 to-blue-50 relative overflow-hidden">
+        {/* Map Grid Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="grid grid-cols-12 grid-rows-8 h-full">
+            {Array.from({ length: 96 }, (_, i) => (
+              <div key={i} className="border border-gray-300"></div>
+            ))}
+          </div>
+        </div>
 
-        {locations.map((location) => (
-          <Marker
-            key={location.id}
-            position={[location.lat, location.lng]}
-            icon={createPriceIcon(
-              location.price,
-              selectedLocation?.id === location.id,
-            )}
-          >
-            <Popup>
-              <div className="text-center">
-                <h3 className="font-semibold text-sm">{location.name}</h3>
-                <p className="text-xs text-gray-600 mb-2">
-                  Рейтинг: {location.rating}
-                </p>
-                <p className="font-bold text-orange-600">
-                  {location.price.toLocaleString()} ₽/сутки
-                </p>
-                <Button
-                  size="sm"
-                  className="mt-2 bg-blue-600 hover:bg-blue-700"
-                >
-                  Подробнее
-                </Button>
+        {/* Location Markers */}
+        {locations.map((location) => {
+          const isSelected = selectedLocation?.id === location.id;
+          const backgroundColor = isSelected
+            ? "#ef4444"
+            : location.price >= 3000
+              ? "#ef4444"
+              : "#f97316";
+
+          // Простая формула для позиционирования маркеров на основе координат
+          const x = ((location.lng + 10) / 80) * 100; // Приблизительное позиционирование
+          const y = ((60 - location.lat) / 20) * 100;
+
+          return (
+            <div
+              key={location.id}
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all hover:scale-110"
+              style={{
+                left: `${Math.max(10, Math.min(90, x))}%`,
+                top: `${Math.max(10, Math.min(90, y))}%`,
+              }}
+            >
+              <div
+                className="px-2 py-1 rounded-xl text-white text-xs font-semibold border-2 border-white shadow-lg"
+                style={{ backgroundColor }}
+              >
+                {Math.floor(location.price / 1000)}
+                {location.price % 1000 !== 0 &&
+                  location.price >= 1000 &&
+                  (location.price % 1000 < 100 ? ".0" : ".") +
+                    Math.floor((location.price % 1000) / 100)}
+                k ₽
               </div>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+
+              {/* Tooltip on hover */}
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 hover:opacity-100 transition-opacity bg-gray-800 text-white p-2 rounded text-xs whitespace-nowrap">
+                <div className="font-semibold">{location.name}</div>
+                <div>Рейтинг: {location.rating}</div>
+                <div>{location.price.toLocaleString()} ₽/сутки</div>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Center Marker if location selected */}
+        {selectedLocation && (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+            <div className="w-6 h-6 bg-red-500 rounded-full border-4 border-white shadow-lg animate-pulse"></div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
