@@ -17,59 +17,37 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-white shadow-sm border-b sticky top-0 z-50">
+    <nav className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link
               to="/"
-              className="flex items-center space-x-3 text-primary hover:text-accent transition-colors"
+              className="flex items-center space-x-2 text-primary hover:text-accent transition-colors"
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
-                <Icon name="MapPin" size={24} className="text-white" />
-              </div>
-              <span className="font-bold text-xl text-gray-800">
+              <Icon name="MapPin" size={32} />
+              <span className="font-bold text-xl font-['Montserrat']">
                 ТурКаталог
               </span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navItems.slice(0, 4).map((item) => (
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   location.pathname === item.path
-                    ? "text-primary bg-green-50"
-                    : "text-gray-600 hover:text-primary hover:bg-gray-50"
+                    ? "text-primary bg-primary/10"
+                    : "text-gray-600 hover:text-primary hover:bg-primary/5"
                 }`}
               >
                 <Icon name={item.icon as any} size={16} />
                 <span>{item.label}</span>
               </Link>
             ))}
-
-            {/* User Actions */}
-            <div className="flex items-center space-x-3 ml-6 pl-6 border-l border-gray-200">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-gray-600 hover:text-primary"
-              >
-                <Icon name="Heart" size={16} />
-                Избранное
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-gray-200 text-gray-600 hover:text-primary hover:border-primary"
-              >
-                <Icon name="User" size={16} />
-                Вход
-              </Button>
-            </div>
           </div>
 
           {/* Mobile menu button */}

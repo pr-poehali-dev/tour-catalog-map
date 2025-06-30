@@ -49,9 +49,9 @@ const Hero = () => {
             Откройте для себя
             <span className="block text-green-200">удивительные места</span>
           </h1>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Тысячи объектов для любых впечатлений — твой полный каталог лучших
-            дней!
+          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-green-100">
+            Полный каталог туристических объектов, отелей, ресторанов и
+            достопримечательностей в одном месте
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button

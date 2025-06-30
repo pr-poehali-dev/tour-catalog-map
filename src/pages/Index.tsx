@@ -1,11 +1,11 @@
 import Navigation from "@/components/Navigation";
-import MapCatalog from "@/components/MapCatalog";
+import Hero from "@/components/Hero";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <Navigation />
-      <MapCatalog />
+      <Hero />
     </div>
   );
 };
