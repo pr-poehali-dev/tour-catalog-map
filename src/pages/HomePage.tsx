@@ -44,9 +44,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary to-secondary py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Откройте для себя 🌍
-          </h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">от</h1>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
             Найдите идеальные места для отдыха, кемпинги, отели и
             достопримечательности на интерактивной карте
